@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.switch-wrapper {
+  position: relative;
+}
+
+.switch-wrapper > div {
+  position: absolute;
+}

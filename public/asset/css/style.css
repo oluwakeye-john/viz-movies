@@ -1,0 +1,46 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #121212;
+    background-color: #2C3949;
+    color: white;
+    opacity: 87%;
+
+}
+
+hr {
+    border: 1px solid white;
+    opacity: 87%;
+}
+
+.navbar {
+    min-height: 80px;
+}
+
+.top {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px;
+    background-color: white;
+}
+
+.col-link {
+    color: white;
+}
+
+.sub {
+    position: fixed;
+    top: 50%;
+    left: 10px;
+    padding: 20px;
+    background-color: white;
+    color: purple;
+}
+
+.rating-star {
+    color: yellow;
+    font-size: 23px;
+}
