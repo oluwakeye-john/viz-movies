@@ -6,8 +6,7 @@ body {
     background-color: #121212;
     background-color: #2C3949;
     color: white;
-    opacity: 87%;
-
+    opacity: 92%;
 }
 
 hr {
@@ -25,6 +24,8 @@ hr {
     right: 20px;
     padding: 10px;
     background-color: white;
+    color: blue;
+    z-index: 99;
 }
 
 .col-link {
@@ -33,14 +34,75 @@ hr {
 
 .sub {
     position: fixed;
-    top: 50%;
-    left: 10px;
-    padding: 20px;
+    bottom: 20px;
+    left: 20px;
+    padding: 10px;
     background-color: white;
     color: purple;
+    z-index: 99;
+}
+
+.backdrop {
+    box-shadow: 0 0 8px 8px white inset;
+    margin-bottom: 40px;
 }
 
 .rating-star {
     color: yellow;
     font-size: 23px;
+}
+
+
+.image-main {
+    position: relative;
+    text-align: center;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .main-carousel{
+        height: 60vw;
+    }
+    .image-text {
+        position: absolute;
+        bottom: 6%;
+        left: 16px;
+        color: white;
+        display: none;
+    }
+    .image-heading {
+        position: absolute;
+        bottom: 6%;
+        left: 6px;
+        color: white;
+    }
+
+}
+
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 769px) {
+    .main-carousel{
+        height: 41vw;
+    }
+
+    .image-text {
+        position: absolute;
+        bottom: 6%;
+        left: 16px;
+        color: white;
+        display: block;
+    }
+
+    .image-heading {
+        position: absolute;
+        top: 99%;
+        left: 16px;
+        color: white;
+        display: block;
+    }
+}
+
+.footer {
+    padding: 5px;
 }

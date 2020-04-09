@@ -1,5 +1,9 @@
 import React, {Component} from "react";
 import Loader from "../Loader";
+import Overview from "../Overview";
+import Videos from "../Videos";
+import Images from "../Images";
+import Credits from "../Credits";
 
 class Detail extends Component{
     constructor(props) {
@@ -11,8 +15,18 @@ class Detail extends Component{
         }
     };
 
-    fetchData = () => {
-        const id = this.props.match.params.id;
+    componentWillReceiveProps(nextProps, nextContext) {
+        if (nextProps.match.params.id !== this.state.id){
+            console.log("Found it")
+            this.setState({
+                id: nextProps.match.params.id
+            })
+            this.fetchData(nextProps.match.params.id)
+        }
+    }
+
+    fetchData = (id=this.props.match.params.id) => {
+        //const id = this.props.match.params.id;
         this.setState({
             id: id
         });
@@ -21,7 +35,7 @@ class Detail extends Component{
             is_fetching: true
         });
 
-        fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=38856360af15f1dd5788856198563c73&append_to_response=videos,images`)
+        fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=38856360af15f1dd5788856198563c73&append_to_response=videos,images,credits,similar,recommendations`)
             .then((resp) => resp.json())
             .then(resp => {
                 console.log(resp);
@@ -43,7 +57,6 @@ class Detail extends Component{
     render() {
         return (
             <div className="container-fluid">
-                <DetailTab />
                 {
                     this.state.is_fetching
                     &&
@@ -52,46 +65,55 @@ class Detail extends Component{
                 {
                     this.state.is_fetching === false
                     &&
-
-                    <div className="row">
-                        <div className="col-lg-7">
-                            <img alt={this.state.movie.title} style={{marginBottom: "40px"}} className="img-fluid rounded waves-effect shadow-lg" src={`https://image.tmdb.org/t/p/original/${this.state.movie.backdrop_path}`}/>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="container">
-                                <h1 className="h1-responsive text-center">{this.state.movie.title}</h1>
-                                <hr /><br />
-                                <h4 className="text-center text-muted"><i>"{this.state.movie.tagline}"</i></h4>
-                                <br />
-                                {
-                                    this.state.movie.genres.map((genre) => (
-                                        <strong>{genre.name} | </strong>
-                                    ))
-                                }
-
-                                <br /><br />
-                                <div className="row">
-                                    <div className="col-4">
-                                        <p className="rating-star"><span className="fas fa-star"> {this.state.movie.vote_average}</span></p>
-                                    </div>
-                                    <div className="col-4">
-                                        <p><span className="fas fa-clock"> {Math.ceil(this.state.movie.runtime/60)}hr {this.state.movie.runtime %60}min</span></p>
-                                    </div>
-                                    <div className="col-4">
-                                        <p><span className="fas fa-box"> {this.state.movie.release_date}</span></p>
-                                    </div>
-                                </div>
-
-                                <br />
-                                <h5><strong>Overview</strong></h5>
-                                <p>{this.state.movie.overview}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <DetailCategory movie={this.state.movie}/>
                 }
             </div>
         );
     }
+}
+
+class DetailCategory extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            category: 0
+        }
+    }
+
+    handleCategoryChange = (index) => {
+        this.setState({
+            category:index
+        })
+    };
+
+    render() {
+        return (
+            <div>
+                <DetailTab onCategoryChange={this.handleCategoryChange} category={this.state.category} />
+                {
+                    this.state.category === 0
+                    &&
+                    <Overview movie={this.props.movie} history={this.props.history} />
+                }
+                {
+                    this.state.category === 1
+                    &&
+                    <Images movie={this.props.movie} />
+                }
+                {
+                    this.state.category === 2
+                    &&
+                    <Videos movie={this.props.movie} />
+                }
+                {
+                    this.state.category === 3
+                    &&
+                    <Credits movie={this.props.movie} />
+                }
+            </div>
+        );
+    }
+
 }
 
 class DetailTab extends Component{
@@ -99,19 +121,19 @@ class DetailTab extends Component{
         return (
             <div>
                 <ul className="nav justify-content-center lighten-4 py-4">
-                    <li className="nav-item">
-                        <a className="nav-link col-link bg-dark" href="#!">Overview</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link col-link" href="#!">Images</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link col-link" href="#!">Videos</a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link col-link" href="#!">Cast</a>
-                    </li>
+                    {
+                        ['Overview', 'Images', 'Videos', 'Cast'].map((cat, index) => {
+                                const className = this.props.category === index ? 'bg-dark nav-link col-link' : 'nav-link col-link';
+                                return (
+                                    <li className="nav-item hoverable" key={index}>
+                                        <a className={className} onClick={() => this.props.onCategoryChange(index)}>{cat}</a>
+                                    </li>
+                                )
+                            }
+                        )
+                    }
                 </ul>
+
             </div>
         );
     }

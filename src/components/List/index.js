@@ -5,7 +5,7 @@ import Loader from "../Loader";
 class ListMain extends Component{
     render() {
         return (
-            <div className="container-fluid">
+            <div className="container">
                 {
                     this.props.is_fetching
                     &&
@@ -29,7 +29,7 @@ class List extends Component{
                 <div className="row">
                     {
                         this.props.movies.map((movie, index) => (
-                            <div className="col-4 col-sm-4 col-md-3  col-lg-2">
+                            <div  key={index} className="col-6 col-sm-4 col-md-3  col-lg-3">
                                 <ListEach movie={movie} index={index}/>
                             </div>
                         ))
@@ -43,7 +43,7 @@ class List extends Component{
 class ListEach extends Component{
     render() {
         return (
-            <div className="view overlay zoom hoverable animated zoomInUp" >
+            <div className="view overlay zoom hoverable animated fadeIn" >
                 {
                     this.props.movie.poster_path
                     &&
@@ -54,10 +54,10 @@ class ListEach extends Component{
                     &&
                     <img alt={this.props.movie.title} style={{marginBottom: "40px"}} className="img-fluid rounded" src={`not_found.jpg`}/>
                 }
-                <Link to={`/${this.props.movie.id}`}><a href="#" className="mask flex-center rgba-black-strong">
+                <Link to={`/${this.props.movie.id}`}><div className="mask flex-center rgba-black-strong">
                     <h6 className="white-text font-italic">{this.props.movie.title}</h6>
                     <br />
-                </a></Link>
+                </div></Link>
             </div>
         );
     }

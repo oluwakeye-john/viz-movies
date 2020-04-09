@@ -1,70 +1,98 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import ListMain from "../List";
+import { connect } from "react-redux";
 
-class SearchMovies extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            movies : [],
-            search: "",
-            is_fetching: false
-        }
+class SearchMovies extends Component {
+
+    componentDidMount() {
+        this.props.set_search_fetching(false)
     }
 
-    handleSearchChange = (e) => {
-        const search = e.target.value;
-        this.setState({
-            search: search
-        });
-        this.fetchSearch(search);
-    };
+    handleChange = (e) => {
+        this.props.set_search_text(e.target.value)
+        this.fetchSearch()
+    }
 
-    fetchSearch = search => {
-        this.setState({
-            is_fetching: true
-        });
-        console.log(search);
+    handleSubmit = (e) => {
+        e.preventDefault();
+    }
 
-        if (search !== "" ){
-            fetch(`https://api.themoviedb.org/3/search/movie?api_key=38856360af15f1dd5788856198563c73&query=${search}`)
+    fetchSearch = () => {
+
+        if (this.props.search_text !== "") {
+            this.props.set_search_fetching(true)
+            fetch(`https://api.themoviedb.org/3/search/movie?api_key=38856360af15f1dd5788856198563c73&query=${this.props.search_text}`)
                 .then((resp) => resp.json())
                 .then(resp => {
                     console.log(resp.results);
-                    this.setState({
-                        movies: resp.results
-                    });
-                    this.setState({
-                        is_fetching: false
-                    })
+                    this.props.init_search(resp.results)
+                    this.props.set_search_fetching(false)
                 });
         }
         else {
-            this.setState({
-                movies: [],
-                is_fetching : false
-            })
+            this.props.init_search([])
+            this.props.set_search_fetching(false)
         }
     }
 
     render() {
         return (
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col-lg-4">
+            <div>
+                <br />
+                <div className="container-fluid">
+                    <div className="row">
+                        <div className="col-lg-4">
 
+                        </div>
+                        <div className="col-lg-4">
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="input-group">
+                                    <input className=" form-control" value={this.props.search_text} onChange={this.handleChange} type="search" placeholder="Search for Movies"
+                                        aria-label="Search" />
+                                
+                                </div>
+
+                            </form>
+                        </div>
                     </div>
-                    <div className="col-lg-4 form-inline">
-                        <i className="fas fa-search" aria-hidden="true"></i>
-                        <input className="form-control form-control-sm ml-3 w-75" type="search" placeholder="Search"
-                               aria-label="Search" onChange={this.handleSearchChange} />
-                    </div>
+                    <hr /><br />
+
+
                 </div>
-                <hr /><br />
-
-                <ListMain movies={this.state.movies} is_fetching={this.state.is_fetching} message="Search Result"/>
+                <ListMain movies={this.props.search} is_fetching={this.props.search_is_fetching} message="Search Result" />
             </div>
         );
     }
 }
 
-export default SearchMovies
+
+
+function mapStateToProps(state) {
+    return {
+        search: state.SearchReducer.search,
+        search_text: state.SearchReducer.search_text,
+        search_is_fetching: state.SearchReducer.is_fetching
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        init_search: (movies) => dispatch({
+            type: "INIT_SEARCH",
+            payload: movies
+        }),
+
+        set_search_fetching: (is_fetching) => dispatch({
+            type: "SET_SEARCH_FETCHING",
+            payload: is_fetching
+        }),
+
+        set_search_text: (search_text) => dispatch({
+            type: "SET_SEARCH_TEXT",
+            payload: search_text
+        })
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchMovies)
