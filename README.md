@@ -1,7 +1,7 @@
 
 # Viz Movies  
 
-This movie website uses TMDB 
+A movie dababase website uses TMDB 
 
 To run
 
