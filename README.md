@@ -1,10 +1,28 @@
 
 # Viz Movies  
 
-A movie dababase website uses TMDB 
+A movie dababase website uses TMDB   
 
-To run
+By oluwakeyejohn
 
-1. Clone this repo
-2. Run `npm install`
-3. Run `npm start`
+[Demo](https://viz-movies.netlify.com)
+
+## Features
+* Upcoming movies
+* Popular movies
+* Recommendations
+* HD pictures
+* Watch movie trailers
+* many more 😊
+
+## Toolchain
+* React
+* Redux
+* React transition group
+* MDB
+
+## Setup
+* Clone this repo
+* run ```npm install```
+* run ```npm start```
+
