@@ -67,6 +67,7 @@ class App extends Component {
         return (
             <div>
                 <Routes />
+                <p className="text-center">By oluwakeyejohn</p>
                 <a href="#top"><span className="fas fa-chevron-up top rounded"></span></a>
                 <button className="sub btn rounded"><span className="fas fa-envelope-open"></span></button>
             </div>
