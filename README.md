@@ -5,7 +5,7 @@ A movie dababase website uses TMDB
 
 By oluwakeyejohn
 
-[Demo](https://viz-movies.netlify.com)
+[Demo](https://vizmovies.netlify.com)
 
 ## Features
 * Upcoming movies
